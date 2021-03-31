@@ -15,10 +15,10 @@ class Ant():
     def move(self):
         self.x += self.speed * numpy.cos(self.angle)
         self.y += self.speed * numpy.sin(self.angle)
-        self.angle = (self.angle + self.turnRate) % (numpy.pi * 2)
+        # self.angle = (self.angle + self.turnRate) % (numpy.pi * 2)
         # self.angle = self.angle + (self.targetAngle - self.angle) * 0.005
-        if abs(self.targetAngle - self.angle) < 0.02:
-            self.rotate()
+        # if abs(self.targetAngle - self.angle) < 0.02:
+            # self.rotate()
 
     def rotate(self):
         self.targetAngle = random.random() * numpy.pi * 2
@@ -29,6 +29,14 @@ class Ant():
             self.turnRate = -0.01 / (random.random() + 1)
         else:
             self.turnRate = 0.01 / (random.random() + 1)
+
+    def bumpY(self):
+        self.angle = 2*numpy.pi - self.angle 
+        self.rotate()
+
+    def bumpX(self):
+        self.angle = numpy.pi - self.angle
+        self.rotate()
 
     def update(self):
         self.move()

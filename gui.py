@@ -28,6 +28,10 @@ class Simulation():
             self.screen.fill((255, 255, 255))
             for i in self.ants:
                 pygame.draw.circle(self.screen, (0, 0, 255), (i.x + self.camera[0], i.y + self.camera[1]), 1)
+                if (i.y > self.height/2 or i.y < -self.height/2):
+                    i.bumpY()
+                if (i.x > self.width/2 or i.x < -self.width/2):
+                    i.bumpX()
                 i.update()
             pygame.display.flip()
         pygame.quit()
