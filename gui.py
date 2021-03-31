@@ -10,12 +10,19 @@ class Simulation():
         self.running = True
         self.ants = [Ant() for i in range(50)]
         self.camera = [width/2, height/2]
+        self.zoom = 1
 
     def run(self):
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                if event.type == pygame.MOUSEWHEEL:
+                    if pygame.key.get_mods():
+                        if event.y < 0:
+                            self.zoom = max(1, self.zoom-1)
+                        else:
+                            self.zoom += 0.1
             keys_pressed = pygame.key.get_pressed()
             if keys_pressed[pygame.K_w]:
                 self.camera[1] += 1
@@ -27,10 +34,10 @@ class Simulation():
                 self.camera[0] -= 1
             self.screen.fill((255, 255, 255))
             for i in self.ants:
-                pygame.draw.circle(self.screen, (0, 0, 255), (i.x + self.camera[0], i.y + self.camera[1]), 1)
-                if (i.y > self.height/2 or i.y < -self.height/2):
+                pygame.draw.circle(self.screen, (0, 0, 255), (i.x*self.zoom + self.camera[0], i.y*self.zoom + self.camera[1]), self.zoom*1.25)
+                if (i.y > self.height/2*self.zoom or i.y < -self.height/2*self.zoom):
                     i.bumpY()
-                if (i.x > self.width/2 or i.x < -self.width/2):
+                if (i.x > self.width/2*self.zoom or i.x < -self.width/2*self.zoom):
                     i.bumpX()
                 i.update()
             pygame.display.flip()
