@@ -1,27 +1,37 @@
-import math
+import numpy as numpy
 import random
 
 class Ant():
     def __init__(self):
-        self.angle = random.random() * math.pi
-        # self.angle = math.pi
+        self.angle = random.random() * numpy.pi * 2
         self.speed = 0.1
         self.x = 0
         self.y = 0
         self.timeAlive = 0
+        self.targetAngle = random.random() * 2 * numpy.pi
+        self.turnRate = 0
+        self.rotate()
 
     def move(self):
-        self.x += self.speed * math.cos(self.angle)
-        self.y += self.speed * math.sin(self.angle)
-        # print(self.x, self.y)
+        self.x += self.speed * numpy.cos(self.angle)
+        self.y += self.speed * numpy.sin(self.angle)
+        self.angle = (self.angle + self.turnRate) % (numpy.pi * 2)
+        # self.angle = self.angle + (self.targetAngle - self.angle) * 0.005
+        if abs(self.targetAngle - self.angle) < 0.02:
+            self.rotate()
 
     def rotate(self):
-        self.angle = random.random() * math.pi * 2
+        self.targetAngle = random.random() * numpy.pi * 2
+        diff = self.targetAngle - self.angle
+        if diff < 0:
+            diff += 2 * numpy.pi
+        if diff > numpy.pi:
+            self.turnRate = -0.01 / (random.random() + 1)
+        else:
+            self.turnRate = 0.01 / (random.random() + 1)
 
     def update(self):
         self.move()
-        if self.timeAlive % 10 == 0:
-            self.rotate()
         self.timeAlive += 1
 
 # def rotate(self):
@@ -38,4 +48,3 @@ class Ant():
 #         self.radius
 #         self.halflife
 #         self.type
-
