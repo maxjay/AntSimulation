@@ -16,6 +16,15 @@ class Simulation():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+            keys_pressed = pygame.key.get_pressed()
+            if keys_pressed[pygame.K_w]:
+                self.camera[1] += 1
+            if keys_pressed[pygame.K_s]:
+                self.camera[1] -= 1
+            if keys_pressed[pygame.K_a]:
+                self.camera[0] += 1
+            if keys_pressed[pygame.K_d]:
+                self.camera[0] -= 1
             self.screen.fill((255, 255, 255))
             for i in self.ants:
                 pygame.draw.circle(self.screen, (0, 0, 255), (i.x + self.camera[0], i.y + self.camera[1]), 1)
