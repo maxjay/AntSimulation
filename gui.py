@@ -1,29 +1,28 @@
 import pygame
 from ant import Ant
 
-
-width = 1280
-height = 720
-
-ants = [Ant() for i in range(50)]
-camera = [width/2, height/2]
-
 pygame.init()
-screen = pygame.display.set_mode([width, height])
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_w:
-                print("hello")
-                camera[0] -= 1
-    screen.fill((255, 255, 255))
-    for i in ants:
-        pygame.draw.circle(screen, (0, 0, 255), (i.x + camera[0], i.y + camera[1]), 1)
-        i.update()
-    pygame.display.flip()
+class Simulation():
+    def __init__(self, width=1280, height=720):
+        self.width = width
+        self.height = height
+        self.screen = pygame.display.set_mode([width, height])
+        self.running = True
+        self.ants = [Ant() for i in range(50)]
+        self.camera = [width/2, height/2]
 
+    def run(self):
+        while self.running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+            self.screen.fill((255, 255, 255))
+            for i in self.ants:
+                pygame.draw.circle(self.screen, (0, 0, 255), (i.x + self.camera[0], i.y + self.camera[1]), 1)
+                i.update()
+            pygame.display.flip()
+        pygame.quit()
 
-pygame.quit()
+if __name__ == "__main__":
+    a = Simulation()
+    a.run()
